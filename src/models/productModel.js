@@ -48,7 +48,7 @@ let productSchema = new mongoose.Schema( {
             enum: ["S", "XS","M","X", "L","XXL", "XL"]
         },
 
-        installments: { Number },
+        installments: Number ,
 
         deletedAt: {
             type: Date,

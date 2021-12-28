@@ -16,8 +16,8 @@ let registerUser = async function (req, res) {
             return;
         }
 
-        let { fname, lname, email, profileImage, phone, password, address } =
-            reqBody;
+        //
+        let { fname, lname, email, profileImage, phone, password, address } = reqBody;
 
         if (!validate.isValid(fname)) {
             res
@@ -58,7 +58,7 @@ let registerUser = async function (req, res) {
         }
 
         //todo ----------------
-        
+
         if (!validate.isValid(phone)) {
             res
                 .status(400)
@@ -87,21 +87,21 @@ let registerUser = async function (req, res) {
             res.status(400).send({ status: false, message: "password is mendatory" });
             return;
         }
-        
+
         if (!(password.length >= 8) && password.length <= 15) {
             res
-            .status(400)
-            .send({ status: false, message: "password length must be 8 to 15" });
+                .status(400)
+                .send({ status: false, message: "password length must be 8 to 15" });
             return;
         }
-        
+
         if (!validate.isValid(address)) {
             res
-            .status(400)
-            .send({ status: false, message: "address field is required" });
+                .status(400)
+                .send({ status: false, message: "address field is required" });
             return;
         }
-        
+
         if (!validate.isValid(address.shipping)) {
             res.status(400).send({
                 status: false,
@@ -157,6 +157,7 @@ let registerUser = async function (req, res) {
                 msg: "Invalid request parameters. Please Provide valid pincode in billing address!!",
             });
         }
+        //vaidation end
 
         if (files && files.length > 0) {
             //upload to s3 and return true..incase of error in uploading this will goto catch block( as rejected promise)
@@ -185,7 +186,7 @@ let registerUser = async function (req, res) {
                 data: createUser,
             });
         } else {
-            res.status(400).send({status: false, message: "please select profile image"})
+            res.status(400).send({ status: false, message: "please select profile image" })
         }
     } catch (error) {
         res.status(500).send({ status: false, message: error.message });
@@ -224,24 +225,29 @@ const getUser = async function (req, res) {
 };
 
 //!update user details  localhost:3000/user/:userId/profile----------->
-
 const updateUserDetailes = async (req, res) => {
     try {
-        userId = req.params.userId;
+        let userId = req.params.userId;
         const requestBody = req.body;
-        const profileImage = req.files        
-        TokenDetail = req.userId        
+        const profileImage = req.files
+        let TokenDetail = req.userId
+
         if (!validate.isValidRequestBody(requestBody)) {
-            return res.status(400).send({ status: false, message: 'No paramateres passed. Book unmodified' })
+            res.status(400).send({ status: false, message: "which filed do you want to update ?" })
+            return
         }
+
         const UserFound = await userModel.findOne({ _id: userId })
         if (!UserFound) {
             return res.status(404).send({ status: false, message: `User not found with given UserId` })
         }
+
         if (!TokenDetail === userId) {
             res.status(400).send({ status: false, message: "userId in url param and in token is not same" })
         }
-        var { fname, lname, email, phone, password } = requestBody        
+
+        let { fname, lname, email, phone, password } = requestBody
+
         if (Object.prototype.hasOwnProperty.call(requestBody, 'fname')) {
             const isfnameAlreadyUsed = await userModel.findOne({ fname: requestBody.fname });
             if (isfnameAlreadyUsed) {
@@ -255,6 +261,7 @@ const updateUserDetailes = async (req, res) => {
                 });
             }
         }
+
         if (Object.prototype.hasOwnProperty.call(requestBody, 'lname')) {
             const islnameAlreadyUsed = await userModel.findOne({ lname: requestBody.lname });
             if (islnameAlreadyUsed) {
@@ -268,6 +275,7 @@ const updateUserDetailes = async (req, res) => {
                 });
             }
         }
+
         if (Object.prototype.hasOwnProperty.call(requestBody, 'phone')) {
             const isphoneAlreadyUsed = await userModel.findOne({ phone: requestBody.phone });
             if (isphoneAlreadyUsed) {
@@ -286,6 +294,7 @@ const updateUserDetailes = async (req, res) => {
                 return;
             }
         }
+
         if (Object.prototype.hasOwnProperty.call(requestBody, 'email')) {
             if (!(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(requestBody.email))) {
                 res.status(400).send({ status: false, message: `Email should be a valid email address` })
@@ -297,22 +306,15 @@ const updateUserDetailes = async (req, res) => {
                 return
             };
         }
-        // console.log(Object.prototype.hasOwnProperty.call(requestBody, 'password'))        if (Object.prototype.hasOwnProperty.call(requestBody, 'password')) {
-        requestBody.password = requestBody.password.trim();
-        if (!(requestBody.password.length > 7 && requestBody.password.length < 16)) {
-            res.status(400).send({ status: false, message: "password should  between 8 and 15 characters" })
-            return
-        };
-        var salt = await bcryptjs.genSalt(10);
-        password = await bcryptjs.hash(requestBody.password, salt)
-        console.log(password)
-        requestBody.password = password;
 
-        if (profileImage && profileImage.length > 0) {
-            var uploadedFileURL = await awsCon.uploadFile(profileImage[0]);
-            console.log(uploadedFileURL)
-            requestBody.profileImage = uploadedFileURL
+        if (password) { //trim()
+            var encryptPass = await bcryptjs.hash(password, 10);
+            if (!(password.length >= 8 && password.length <= 15)) {
+                res.status(400).send({ status: false, message: "password should  between 8 and 15 characters" })
+                return
+            };
         }
+
         if (requestBody.address) {
             // requestBody.address = JSON.parse(requestBody.address)            if (requestBody.address.shipping) {
             if (requestBody.address.shipping.street) {
@@ -342,19 +344,37 @@ const updateUserDetailes = async (req, res) => {
                 }
             }
         }
+        // requestBody.UpdatedAt = new Date()
+
+        if (profileImage && profileImage.length > 0) {
+
+            var uploadedFileURL = await awsCon.uploadFile(profileImage[0]);
+            console.log(uploadedFileURL)
+            //     requestBody.profileImage = uploadedFileURL
+        }
+
+        const UpdateData = {
+            fname,
+            profileImage: uploadedFileURL,
+            lname,
+            email,
+            phone,
+            password: encryptPass
+            // password: password ? encryptPass : "password is required"
+        }
         requestBody.UpdatedAt = new Date()
-        const UpdateData = { fname, profileImage: uploadedFileURL, lname, email, phone, password }
+        console.log(requestBody)
+
         const upatedUser = await userModel.findOneAndUpdate({ _id: userId }, UpdateData, { new: true })
+
         res.status(200).send({ status: true, message: 'User updated successfully', data: upatedUser });
+
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message });
     }
 }
 
-
-
 //!login user localhost:3000/user/:userId/profile-------->
-
 const login = async function (req, res) {
     try {
         const requestBody = req.body;
@@ -363,7 +383,6 @@ const login = async function (req, res) {
                 status: false,
                 message: "Invalid request parameters. Please provide login details",
             });
-            return;
         }
         // Extract params
         const { email, password } = requestBody;

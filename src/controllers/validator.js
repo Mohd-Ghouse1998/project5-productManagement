@@ -10,9 +10,9 @@ const isValidTitle = function (title) {
     return ['Mr', 'Mrs', 'Miss'].indexOf(title) !== -1
 }
 
-const isValidSize = function (title) {
-    return ["S", "XS", "M", "X", "L", "XXL", "XL"].indexOf(title) !== -1
-}
+const isValidSize = function (size) {
+    return ["S", "XS", "M", "X", "L", "XXL", "XL"].indexOf(size) !== -1
+    }
 
 let isValidObjectId = function (ObjectId) {
     return mongoose.Types.ObjectId.isValid(ObjectId)
