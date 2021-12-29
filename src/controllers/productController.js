@@ -280,11 +280,13 @@ const updateProduct = async function (req, res) {
             console.log(uploadedFileURL)
             // requestBody.productImage = uploadedFileURL
         }
-    //     if(!validate.isValid(productImage)){
-    //         res.sendStatus(404)
-    //         return
-    //     }
-    // }
+        if(!validate.isValid(productImage)){
+            res.sendStatus(404)
+            return
+        }
+    
+    console.log(productImage)
+    // console.log(uploadedFileURL)
 
         if (!validate.isValidRequestBody(requestBody || productImage)) {
             return res.status(400).send({ status: false, message: 'No paramateres passed. product unmodified' })

@@ -57,7 +57,7 @@ let registerUser = async function (req, res) {
             return;
         }
 
-        //todo ----------------
+        //todo ---------------->
 
         if (!validate.isValid(phone)) {
             res

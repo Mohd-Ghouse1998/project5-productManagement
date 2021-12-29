@@ -1,9 +1,10 @@
-let express = require('express');
-let userController = require('../controllers/userController')
-let productController = require('../controllers/productController')
+const express = require('express');
+const userController = require('../controllers/userController')
+const productController = require('../controllers/productController')
+const cartController = require('../controllers/cartController')
 // let awsController = require('../controllers/awsController')
-let router = express.Router();
-let midvarify = require('../middleware/verify')
+const router = express.Router();
+const midvarify = require('../middleware/verify')
 
 // router.post('/write-file-aws', awsController.createProfilePicture)
 router.post('/register', userController.registerUser)
@@ -17,5 +18,8 @@ router.get('/products',productController.getProduct )
 router.get('/products/:productId',productController.getProductById )
 router.put('/products/:productId',productController.updateProduct )
 router.delete('/products/:productId',productController.deleteproductByID )
+
+//cart routes---------->
+router.post('/users/:userId/cart', cartController.getCartDetails)
 
 module.exports = router;

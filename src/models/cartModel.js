@@ -9,7 +9,7 @@ let cartSchema = new mongoose.Schema({
             required: "user id is required",
             unique: "user id must be unique"
         },
-        items: [{
+        items: [{ 
             productId: {
                 type: objectId,
                 ref: "Product",

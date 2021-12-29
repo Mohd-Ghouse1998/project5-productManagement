@@ -463,3 +463,28 @@
 
 // console.log(Number(num).toFixed(2))
 // console.log($.number( 123, 2 ))
+
+
+let items = [{ 
+    productId: {
+        type: "objectId",
+        ref: "Product",
+        required: "product id is mandatory"
+    },
+    quantity: { 
+        type: "Number", 
+        required: "quantity is mandatory", 
+        min: 1
+    }
+}]
+// console.log(items)
+// console.log("---------------------------->")
+// //---------------------------->
+// console.log(items[0].productId.type)
+// console.log("---------------------------->")
+// //---------------------------->
+// for(let i = 0; i < items.length; i++){
+//     console.log(items[i])
+// }
+
+console.log(items.length)
