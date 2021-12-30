@@ -18,7 +18,8 @@ let cartSchema = new mongoose.Schema({
             quantity: { 
                 type: Number, 
                 required: "quantity is mandatory", 
-                min: 1
+                min: 1,
+                default: 1
             }
         }],
         totalPrice: { 
