@@ -256,7 +256,42 @@ const getCart = async function (req, res) {
     }
 };
 
-module.exports = { getCartDetails, updateCart, getCart }
+
+const deleteCart = async function(req, res){
+
+    try {
+
+        const reqParams = req.params.userId
+
+        if(!validate.isValidObjectId(reqParams)){
+            return res.status(400).send({status: false, message: `${reqParams} is not a valid userId`})
+        }
+
+        const isUserExist = await userModel.findOne({ _id: reqParams })
+        if(!isUserExist){
+            return res.status(400).send({status: false, message: `${reqParams} user not available`})
+        }
+
+        const isCartExist = await cartModel.findOne({userId: reqParams})
+        if(!isCartExist){
+            return res.status(400).send({status: false, message: `user don't have cart`})
+        }
+
+        // console.log(isCartExist.items.length)
+        if(isCartExist.items.length === 0){
+            return res.status(400).send({status: false, message: `product not available in existing cart`})
+        }
+    
+
+        const deleteProducts = await cartModel.findOneAndUpdate({userId: reqParams}, {items: [], totalPrice: 0, totalItems: 0}, {new: true})
+        return res.status(200).send({status: false, message: `product successfully deleted`, data: deleteProducts})
+
+    } catch(error) {
+        res.status(500).send({status: false, message: error.message})
+    };
+};
+
+module.exports = { getCartDetails, updateCart, getCart, deleteCart }
 
 
 // const deleteProductInCart = async function (req, res) {

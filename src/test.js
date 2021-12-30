@@ -465,19 +465,19 @@
 // console.log($.number( 123, 2 ))
 
 
-// let items = [
-//     { productId: "654656565132s1ad1a651", quantity: 5 },
-//     { productId: "654656565132s1ad1a561", quantity: 2 },
-//     { productId: "654656565132s1ad1a000", quantity: 3 }
-// ]
+let items = [
+    { productId: "654656565132s1ad1a651", quantity: 5 },
+    { productId: "654656565132s1ad1a561", quantity: 2 },
+    { productId: "654656565132s1ad1a000", quantity: 3 }
+]
 
-// let find = items.find(function(post, index){
-//     if(post.productId === "654656565132s1ad1a561" ){
-//         return true;
-//     }
-// })
+let find = items.find(function(post, index){
+    if(post.productId === "654656565132s1ad1a561" ){
+        return true;
+    }
+})
 
-// console.log(find.productId)
+console.log(find.quantity)
 // console.log(items)
 // console.log("---------------------------->")
 // //---------------------------->
