@@ -21,5 +21,7 @@ router.delete('/products/:productId',productController.deleteproductByID )
 
 //cart routes---------->
 router.post('/users/:userId/cart', cartController.getCartDetails)
+router.put('/users/:userId/cart', cartController.updateCart)
+router.get('/users/:userId/cart', cartController.getCart)
 
 module.exports = router;

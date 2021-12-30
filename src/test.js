@@ -465,18 +465,19 @@
 // console.log($.number( 123, 2 ))
 
 
-let items = [{ 
-    productId: {
-        type: "objectId",
-        ref: "Product",
-        required: "product id is mandatory"
-    },
-    quantity: { 
-        type: "Number", 
-        required: "quantity is mandatory", 
-        min: 1
-    }
-}]
+// let items = [
+//     { productId: "654656565132s1ad1a651", quantity: 5 },
+//     { productId: "654656565132s1ad1a561", quantity: 2 },
+//     { productId: "654656565132s1ad1a000", quantity: 3 }
+// ]
+
+// let find = items.find(function(post, index){
+//     if(post.productId === "654656565132s1ad1a561" ){
+//         return true;
+//     }
+// })
+
+// console.log(find.productId)
 // console.log(items)
 // console.log("---------------------------->")
 // //---------------------------->
@@ -487,4 +488,4 @@ let items = [{
 //     console.log(items[i])
 // }
 
-console.log(items.length)
+// console.log(items.length)
