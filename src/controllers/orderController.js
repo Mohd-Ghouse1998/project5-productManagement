@@ -9,20 +9,28 @@ const createOrder = async function (req, res) {
             let userId = req.params.userId
             let cartId = req.body.cartId
             const varifyUser = req.userId
+            let reqbody=req.body
 
         if (!validate.isValidObjectId(userId)) {
             res.status(400).send({ status: false, message: "please enter valid userId details" })
             return
         }
 
-        if (!varifyUser === userId) {
+        if (!(varifyUser === userId)) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
+            return
         }
 
         const findUser = await userModel.findOne({_id:userId })
 
         if (!findUser) {
             res.status(400).send({ status: false, message: "user dose not exist" })
+            return
+        }
+
+        const findCart = await cartModel.findOne({ _id:cartId ,userId:userId })
+        if (!findCart) {
+            res.status(400).send({ status: false, message: "cart dose not exist" })
             return
         }
 
@@ -40,11 +48,7 @@ const createOrder = async function (req, res) {
             res.status(400).send({ status: false, message: "cart id  is not valid" })
             return
         }
-        const findCart = await cartModel.findOne({ _id:cartId ,userId:userId })
-        if (!findCart) {
-            res.status(400).send({ status: false, message: "cart dose not exist" })
-            return
-        }
+        
         let cartItems=findCart.items
         let cartPrice=findCart.totalPrice
         let cartTotalItems=findCart.totalItems
@@ -55,6 +59,8 @@ const createOrder = async function (req, res) {
             totalPrice:cartPrice ,
             totalItems:cartTotalItems ,
             totalQuantity:cartTotalQuantity ,
+            cancellable:reqbody.cancellable,
+            status:reqbody.status
         }
         const orderCreated=await orderModel.create(orderDetails)
         res.status(201).send({ status: false, message:"order created successfully" , data: orderCreated })
@@ -76,8 +82,9 @@ const updateOrder = async function(req,res){
             return
         }
 
-        if (!varifyUser === userId) {
+        if (!(varifyUser === userId)) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
+            return
         }
 
         const findUser = await userModel.findOne({_id:userId })

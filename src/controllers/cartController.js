@@ -23,8 +23,9 @@ const getCartDetails = async function (req, res) {
             return
         }
 
-        if (!varifyUser === reqParams) {
+        if (varifyUser !== reqParams) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
+            return
         }
 
         let { userId, items, totalPrice, totalItems } = reqBody
@@ -137,8 +138,9 @@ const updateCart = async function (req, res) {
         }
 
         //compair token and user id
-        if (!varifyUser === userId) {
+        if (!(varifyUser === userId)) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
+            return
         }
 
         let { cartId, productId, removeProduct } = reqBody
@@ -155,7 +157,7 @@ const updateCart = async function (req, res) {
             res.status(400).send({ status: false, message: "cart id  is not valid" })
             return
         }
-        const findCart = await cartModel.findOne({ cartId })
+        const findCart = await cartModel.findOne({userId:userId,_id:cartId })
         if (!findCart) {
             res.status(400).send({ status: false, message: "cart dose not exist" })
             return
@@ -168,7 +170,7 @@ const updateCart = async function (req, res) {
             res.status(400).send({ status: false, message: "productId is not valid" })
             return
         }
-        const findProduct = await productModel.findOne({ _id: productId, isDeleted: false, deletedAt: null })
+        const findProduct = await productModel.findOne({ _id: productId, isDeleted: false })
         let proPrice = findProduct.price
         console.log(proPrice)
         if (!findProduct) {
@@ -180,12 +182,20 @@ const updateCart = async function (req, res) {
             return
         }
         let findUserCart = await cartModel.findOne({ _id: cartId })
-        let findItems = findUserCart.items
-        console.log(findItems.length)
+
+       // let findItems = findUserCart.items
+       // console.log(findItems.length)
         const findQuant = findUserCart.items.find(c => c['productId'] == productId)
+        if(!findQuant){
+            res.status(400).send({status:false,message:"product does not  exist in this cart"})
+            return
+
+        }
+       console.log(findQuant)
+       console.log(findQuant.productId)
         let totalItems = findQuant.quantity
         // quantity of product        
-        console.log(itemArray)
+        //console.log(itemArray)
         let quantPrice = proPrice * totalItems
         //product + quantitity price        
         console.log(quantPrice)
@@ -234,8 +244,9 @@ const getCart = async function (req, res) {
             return;
         }
 
-        if (!varifyUser === userId) {
+        if (!(varifyUser === userId)) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
+            return
         }
 
         let getUser = await userModel.findOne({ _id: userId });
@@ -264,8 +275,9 @@ const deleteCart = async function (req, res) {
             return res.status(400).send({ status: false, message: `${reqParams} is not a valid userId` })
         }
 
-        if (!varifyUser === reqParams) {
+        if (!(varifyUser === reqParams)) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
+            return
         }
 
         const isUserExist = await userModel.findOne({ _id: reqParams })
@@ -285,7 +297,7 @@ const deleteCart = async function (req, res) {
 
 
         const deleteProducts = await cartModel.findOneAndUpdate({ userId: reqParams }, { items: [], totalPrice: 0, totalItems: 0 }, { new: true })
-        return res.status(200).send({ status: false, message: `product successfully deleted`, data: deleteProducts })
+        return res.status(200).send({ status: false, message: `product successfully deleted`, data: deleteProducts})
 
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
