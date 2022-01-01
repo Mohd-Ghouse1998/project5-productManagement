@@ -51,6 +51,11 @@ let releaseProduct = async function (req, res) {
             return
         }
 
+        if (!validate.isValid(availableSizes)) {
+            res.status(400).send({ status: false, message: `size is required` })
+            return
+        }
+
         for (let i = 0; i < availableSizes.length; i++) {
             if (!validate.isValid(availableSizes[i])) {
                 res.status(400).send({ status: false, message: `${availableSizes[i]} is not valid size` })
@@ -92,7 +97,7 @@ let releaseProduct = async function (req, res) {
             res.status(200).send({ status: true, message: `product ${title} created successfully`, data: createProduct })
             return
         } else {
-            res.status(400).send({ status: false, message: "somthing unexpected happen" })
+            res.status(400).send({ status: false, message: "product image is required" })
             return
         }
     } catch (error) {
@@ -159,7 +164,7 @@ const getProductById = async function (req, res) {
             return;
         }
 
-        let findPro = await productModel.findOne({ _id: id })
+        let findPro = await productModel.findOne({ _id: id, isDeleted: false })
         if (!findPro) {
             res.status(404).send({ status: false, message: `product is not available with this ${id} id` })
             return
@@ -183,9 +188,9 @@ const updateProduct = async function (req, res) {
         const requestBody = req.body;
         const files = req.files
 
-        // if (!validate.isValidRequestBody(requestBody || productImage)) {
-        //     return res.status(400).send({ status: false, message: 'No paramateres passed. product unmodified' })
-        // }
+        if (!validate.isValidObjectId(productId)) {
+            return res.status(400).send({ status: false, message: 'enter valid product ID' })
+        }
 
         let productDetails = await productModel.findOne({ _id: productId, isDeleted: false })
 
@@ -194,15 +199,16 @@ const updateProduct = async function (req, res) {
         }
 
         const { title, description, price, isFreeShipping, currencyId, currencyFormat, style, availableSizes, installments, productImage } = requestBody
-
+        
+        const istitleAlreadyUsed = await productModel.findOne({ _id: productId });
+        
         if (Object.prototype.hasOwnProperty.call(requestBody, "title")) {
             if (!validate.isValid(title)) {
                 res.status(400).send({ status: false, message: "please enter valid title" })
                 return
             }
-
             const istitleAlreadyUsed = await productModel.findOne({ title });
-
+            
             if (istitleAlreadyUsed) {
                 res.status(400).send({ status: false, message: `${title} these title is already registered` })
                 return
@@ -264,6 +270,12 @@ const updateProduct = async function (req, res) {
                 res.status(400).send({status: false, message: `${availableSizes[i]} not a valid size please enter size Btween 'S', 'XS', 'M', 'X', 'L', 'XXL', 'XL' `})
                 return
             }
+
+            if(istitleAlreadyUsed.availableSizes.indexOf(availableSizes) !== -1){
+                res.status(400).send({status: false, message: "this size already avalible"})
+                return
+            }
+            console.log(istitleAlreadyUsed.availableSizes.indexOf(availableSizes))
         }
     }
     
@@ -274,26 +286,38 @@ const updateProduct = async function (req, res) {
             }
         }     //productImage
 
-        // if (Object.prototype.hasOwnProperty.call(productImage)) {
+        // if (Object.prototype.hasOwnProperty.call(req.files.productImage)) {
         if (files && files.length > 0) {
             var uploadedFileURL = await awsCon.uploadFile(files[0]);
             console.log(uploadedFileURL)
             // requestBody.productImage = uploadedFileURL
         }
-        if(!validate.isValid(productImage)){
-            res.sendStatus(404)
-            return
-        }
+        // if(!validate.isValid(productImage)){
+        //     res.status(400).send({status: false, message: " please add valid product image"})
+        //     return
+        // }
+    // }
     
-    console.log(productImage)
+    console.log(req.files)
     // console.log(uploadedFileURL)
 
-        if (!validate.isValidRequestBody(requestBody || productImage)) {
+        if (!validate.isValidRequestBody(requestBody)) {
             return res.status(400).send({ status: false, message: 'No paramateres passed. product unmodified' })
         }
 
-        const productValue = { title, description, price, isFreeShipping, currencyId, currencyFormat, productImage: uploadedFileURL, style, availableSizes, installments }
+        const productValue = { 
+            title, 
+            description, 
+            price, 
+            isFreeShipping, 
+            currencyId, 
+            currencyFormat, 
+            productImage: uploadedFileURL, 
+            style, 
+            installments 
+        }
 
+        await productModel.findOneAndUpdate({_id: productId}, {$push: {availableSizes: availableSizes}})
         const upatedProduct = await productModel.findOneAndUpdate({ _id: productId }, productValue, { new: true })
         res.status(200).send({ status: true, message: 'User updated successfully', data: upatedProduct });
 
@@ -325,7 +349,7 @@ const deleteproductByID = async (req, res) => {
             return res.status(400).send({ status: false, message: `product has been already deleted.` })
         } else {
             const deleteData = await productModel.findOneAndUpdate({ _id: { $in: findproduct } }, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true });
-            return res.status(200).send({ status: true, message: "product deleted successfullly.", data: deleteData })
+            return res.status(200).send({ status: true, message: "product deleted successfullly."})
         }
     } catch (err) {
         return res.status(500).send({ status: false, message: "Something went wrong", Error: err.message })

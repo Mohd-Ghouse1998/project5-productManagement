@@ -199,17 +199,18 @@ const getUser = async function (req, res) {
         let userId = req.params.userId;
         let userToken = req.userId;
 
-        if (userToken !== userId) {
-            res.status(400).send({ status: false, message: "authorization failed!" });
-            return;
-        }
-
         if (!validate.isValidObjectId(userId)) {
             res
                 .status(404)
                 .send({ status: false, message: `${userId} is not valid user id ` });
             return;
         }
+
+        if (userToken !== userId) {
+            res.status(400).send({ status: false, message: "authorization failed!" });
+            return;
+        }
+
         let getUser = await userModel.findOne({ _id: userId });
         if (!getUser) {
             return res
@@ -231,6 +232,10 @@ const updateUserDetailes = async (req, res) => {
         const requestBody = req.body;
         const profileImage = req.files
         let TokenDetail = req.userId
+
+        if(!validate.isValidObjectId(userId)){
+            res.status(400).send({status: false, message: "enter valid object Id"})
+        }
 
         if (!validate.isValidRequestBody(requestBody)) {
             res.status(400).send({ status: false, message: "which filed do you want to update ?" })

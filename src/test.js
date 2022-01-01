@@ -620,11 +620,11 @@
 // console.log($.number( 123, 2 ))
 
 
-let items = [
-        { productId: "654656565132s1ad1a651", quantity: 5 },
-        { productId: "654656565132s1ad1a561", quantity: 2 },
-        { productId: "654656565132s1ad1a000", quantity: 3 }
-]
+// let items = [
+//         { productId: "654656565132s1ad1a651", quantity: 5 },
+//         { productId: "654656565132s1ad1a561", quantity: 2 },
+//         { productId: "654656565132s1ad1a000", quantity: 3 }
+// ]
 
 // let find = items.find(function (post, index) {
 //         if (post.productId === "654656565132s1ad1a561") {
@@ -632,12 +632,15 @@ let items = [
 //         }
 // })
 
-let constr = items.toString()
-let strfy = JSON.stringify(items)
-console.log(constr)
-console.log(strfy)
+// let constr = items.toString()
+// let strfy = JSON.stringify(items)
+// console.log(constr)
+// console.log(strfy)
 
-// console.log(find)
+let arr = [1, 2 , 3, 4]
+
+let addArr = arr.push(6)
+console.log(arr)
 // console.log("---------------------------->")
 // //---------------------------->
 // console.log(items[0].productId.type)
