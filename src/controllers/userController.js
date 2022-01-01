@@ -264,10 +264,10 @@ const updateUserDetailes = async (req, res) => {
 
         if (Object.prototype.hasOwnProperty.call(requestBody, 'lname')) {
             const islnameAlreadyUsed = await userModel.findOne({ lname: requestBody.lname });
-            if (islnameAlreadyUsed) {
-                res.status(400).send({ status: false, message: `${requestBody.fname} lname is already registered` })
-                return
-            }
+            // if (islnameAlreadyUsed) {
+            //     res.status(400).send({ status: false, message: `${requestBody.fname} lname is already registered` })
+            //     return
+            // }
             if (!validate.isValid(lname)) {
                 return res.status(400).send({
                     status: false,

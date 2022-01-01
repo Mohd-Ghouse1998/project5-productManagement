@@ -449,160 +449,160 @@
 // //     }
 // // }
 
-       // let reqBody = req.body
-        // let reqParams = req.params.userId
-        // // const TokenDetail = req.userId
+//        let reqBody = req.body
+//         let reqParams = req.params.userId
+//         // const TokenDetail = req.userId
 
-        // if (!validate.isValidObjectId(reqParams)) {
-        //     res.staus(400).send({ staus: false, message: "please enter valid details" })
-        //     return
-        // }
+//         if (!validate.isValidObjectId(reqParams)) {
+//             res.staus(400).send({ staus: false, message: "please enter valid details" })
+//             return
+//         }
 
-        // if (!validate.isValidRequestBody(reqBody)) {
-        //     res.staus(400).send({ staus: false, message: "please enter valid details" })
-        //     return
-        // }
+//         if (!validate.isValidRequestBody(reqBody)) {
+//             res.staus(400).send({ staus: false, message: "please enter valid details" })
+//             return
+//         }
 
-        // // if (!TokenDetail === reqParams) {
-        // //     res.status(400).send({ status: false, message: "user Authorization failed" })
-        // // }
+//         // if (!TokenDetail === reqParams) {
+//         //     res.status(400).send({ status: false, message: "user Authorization failed" })
+//         // }
 
-        // let { userId, items, totalPrice, totalItems } = reqBody
+//         let { userId, items, totalPrice, totalItems } = reqBody
 
-        // // if (reqParams === userId) {
-        //     // if (!validate.isValid(userId)) {
-        //     //     res.status(400).send({ status: false, message: "enter valide user id" })
-        //     //     return
-        //     // }
+//         // if (reqParams === userId) {
+//             // if (!validate.isValid(userId)) {
+//             //     res.status(400).send({ status: false, message: "enter valide user id" })
+//             //     return
+//             // }
 
-        //     // if (!validate.isValidObjectId(userId)) {
-        //     //     res.status(400).send({ status: false, message: `${userId} is not a valid userId` })
-        //     //     return
-        //     // }
+//             // if (!validate.isValidObjectId(userId)) {
+//             //     res.status(400).send({ status: false, message: `${userId} is not a valid userId` })
+//             //     return
+//             // }
 
-        //     const findUser = await userModel.findOne({ _id: reqParams })
-        //     if (!findUser) {
-        //         res.status(400).send({ status: false, message: "user dose not exist" })
-        //         return
-        //     }
+//             const findUser = await userModel.findOne({ _id: reqParams })
+//             if (!findUser) {
+//                 res.status(400).send({ status: false, message: "user dose not exist" })
+//                 return
+//             }
 
-        //     let productID = items[0].productId
-        //     let proQuantity = items[0].quantity
-        //     if (!validate.isValid(items)) {
-        //         res.status(400).send({ status: false, message: "enter valide items" })
-        //         return
-        //     }
+//             let productID = items[0].productId
+//             let proQuantity = items[0].quantity
+//             if (!validate.isValid(items)) {
+//                 res.status(400).send({ status: false, message: "enter valide items" })
+//                 return
+//             }
 
-        //     if (!validate.isValid(productID)) {
-        //         res.status(400).send({ status: false, message: "enter valide productId" })
-        //         return
-        //     }
+//             if (!validate.isValid(productID)) {
+//                 res.status(400).send({ status: false, message: "enter valide productId" })
+//                 return
+//             }
 
-        //     if (!validate.isValidObjectId(productID)) {
-        //         res.status(400).send({ status: false, message: "productId not valid" })
-        //         return
-        //     }
-        //     // console.log(items[0])
-        //     // console.log(items[0].productId)
-        //     // console.log(productID)
+//             if (!validate.isValidObjectId(productID)) {
+//                 res.status(400).send({ status: false, message: "productId not valid" })
+//                 return
+//             }
+//             // console.log(items[0])
+//             // console.log(items[0].productId)
+//             // console.log(productID)
 
-        //     // if (!validate.isValid(proQuantity)) {
-        //     //     res.status(400).send({ status: false, message: "enter valide quantity" })
-        //     //     return
-        //     // }
+//             // if (!validate.isValid(proQuantity)) {
+//             //     res.status(400).send({ status: false, message: "enter valide quantity" })
+//             //     return
+//             // }
 
-        //     const checkPrice = await productModel.findOne({ _id: productID })
-        //     const ifCartAlreadyCreated = await cartModel.findOne({ userId: reqParams })
-        //     // console.log(checkPrice.price)
-        //     // console.log(checkPrice)
-        //     // console.log((ifCartAlreadyCreated.items[0].productId).toString())
-        //     // console.log(ifCartAlreadyCreated.items[0].productId.toString())
-        //     // console.log(productID)
+//             const checkPrice = await productModel.findOne({ _id: productID })
+//             const ifCartAlreadyCreated = await cartModel.findOne({ userId: reqParams })
+//             // console.log(checkPrice.price)
+//             // console.log(checkPrice)
+//             // console.log((ifCartAlreadyCreated.items[0].productId).toString())
+//             // console.log(ifCartAlreadyCreated.items[0].productId.toString())
+//             // console.log(productID)
 
-        //     if (!checkPrice) {
-        //         res.status(404).send({ status: false, message: `${productID} id dose not exist` })
-        //         return
-        //     }
-        //     console.log(ifCartAlreadyCreated.items)
-        //     if (ifCartAlreadyCreated) {
-        //         for(let i = 0; i < ifCartAlreadyCreated.items.length; i++ ){
-        //             console.log(ifCartAlreadyCreated.items[i])
+//             if (!checkPrice) {
+//                 res.status(404).send({ status: false, message: `${productID} id dose not exist` })
+//                 return
+//             }
+//             console.log(ifCartAlreadyCreated.items)
+//             if (ifCartAlreadyCreated) {
+//                 for(let i = 0; i < ifCartAlreadyCreated.items.length; i++ ){
+//                     console.log(ifCartAlreadyCreated.items[i])
 
-        //         // let find = ifCartAlreadyCreated.items.find(function(post, index){
-        //         //     let consStr = post.productId.toString()
-        //         //         if(consStr === productID){
-        //         //             return true;
-        //         //         }
-        //         //     })
+//                 // let find = ifCartAlreadyCreated.items.find(function(post, index){
+//                 //     let consStr = post.productId.toString()
+//                 //         if(consStr === productID){
+//                 //             return true;
+//                 //         }
+//                 //     })
 
-        //         // const proP = checkPrice.price
-        //         // console.log(proP)
-        //         // console.log(find.quantity + 1)
-        //         // console.log(find.productId.toString())
-        //         //todo =-=-=-=-=-=-=-==-=-=-=-========================================================>
-        //         console.log(ifCartAlreadyCreated.items[i].productId.toString())
-        //         console.log(productID)
-        //         if(productID === ifCartAlreadyCreated.items[i].productId.toString()){
-        //             console.log("yo")
-        //             let quantity = ifCartAlreadyCreated.items[i].quantity
-        //             await cartModel.findOneAndUpdate({userId: reqParams, 'items.productId': productID}, {'items.$.quantity': quantity + proQuantity})
-        //             const updateQuant = await cartModel.findOneAndUpdate({userId: reqParams}, {totalPrice: proQuantity*checkPrice.price +  ifCartAlreadyCreated.totalPrice}, {new: true})
-        //             console.log(quantity)
-        //             return res.status(200).send({status: false, message: "product added to cart", data: updateQuant})
-        //         } 
-        //         // for(let i = 0; i < ifCartAlreadyCreated.items.length; i++ ){
-        //         //     // console.log(ifCartAlreadyCreated.items[i].productId)
-        //         //     let convertStr = ifCartAlreadyCreated.items[i].productId.toString()
-        //         //     // console.log(convertStr)
-        //         //     if(convertStr === productID){
-        //         //         // console.log(quant)
-        //         //         // console.log(proQuantity)
-        //         //         // let objIndex = ifCartAlreadyCreated.items.findIndex((obj => obj.productId == productID));
-        //         //         // // console.log(objIndex)
-        //         //         const quant = ifCartAlreadyCreated.items[i].quantity
-        //         //         console.log(quant)
-        //         //         const blankArr = []
-        //         //         let takeOldQuant = {defVar: productID, quant: proQuantity + quant}
-        //         //         blankArr.push(takeOldQuant)
-        //         //         console.log(blankArr)
-        //         //         console.log(takeOldQuant)
-        //         //         const updateExistingProduct = await cartModel.findOneAndUpdate({userId: userId}, {items: blankArr, totalPrice: proP + ifCartAlreadyCreated.totalPrice })
-        //         //         res.status(200).send({status: true, message: "thanks for purchesing product have a great day", data: updateExistingProduct})
-        //         //         return
-        //         //     }
-        //         // }
-        //         //     totalItems: ifCartAlreadyCreated + items.length
-        //         // }
-        //         // console.log(proP)
-        //         //todo =-=-=-=-=-=-=-==-=-=-=-========================================================>
-        //         const updateItems = await cartModel.updateOne({ userId: reqParams }, { $push: { items: items } })
-        //         const updateTPriceItems = await cartModel.findOneAndUpdate({ userId: reqParams }, { totalPrice: (checkPrice.price * proQuantity) + ifCartAlreadyCreated.totalPrice, totalItems: items.length + 1 }, { new: true })
-        //         res.status(200).send({ status: true, message: "product added successfully", data: updateTPriceItems })
-        //         return
-        //     }
-        //     }
-        //     // console.log(productID)
-        //     // console.log(productID)
-        //     // console.log(productID)
-        //     // let checkPrice = await productModel.findOne({ productID })
-        //     // console.log(reqParams)
-        //     //todo if cart already exist------------------------------>
-        //     var saveCart = {
-        //         userId: reqParams,
-        //         items,
-        //         totalPrice: checkPrice.price * proQuantity,
-        //         // checkPrice.price * proQuantity
-        //         totalItems: items.length
-        //     };
-        //     // console.log(saveCart)
+//                 // const proP = checkPrice.price
+//                 // console.log(proP)
+//                 // console.log(find.quantity + 1)
+//                 // console.log(find.productId.toString())
+//                 //todo =-=-=-=-=-=-=-==-=-=-=-========================================================>
+//                 console.log(ifCartAlreadyCreated.items[i].productId.toString())
+//                 console.log(productID)
+//                 if(productID === ifCartAlreadyCreated.items[i].productId.toString()){
+//                     console.log("yo")
+//                     let quantity = ifCartAlreadyCreated.items[i].quantity
+//                     await cartModel.findOneAndUpdate({userId: reqParams, 'items.productId': productID}, {'items.$.quantity': quantity + proQuantity})
+//                     const updateQuant = await cartModel.findOneAndUpdate({userId: reqParams}, {totalPrice: proQuantity*checkPrice.price +  ifCartAlreadyCreated.totalPrice}, {new: true})
+//                     console.log(quantity)
+//                     return res.status(200).send({status: false, message: "product added to cart", data: updateQuant})
+//                 } 
+//                 // for(let i = 0; i < ifCartAlreadyCreated.items.length; i++ ){
+//                 //     // console.log(ifCartAlreadyCreated.items[i].productId)
+//                 //     let convertStr = ifCartAlreadyCreated.items[i].productId.toString()
+//                 //     // console.log(convertStr)
+//                 //     if(convertStr === productID){
+//                 //         // console.log(quant)
+//                 //         // console.log(proQuantity)
+//                 //         // let objIndex = ifCartAlreadyCreated.items.findIndex((obj => obj.productId == productID));
+//                 //         // // console.log(objIndex)
+//                 //         const quant = ifCartAlreadyCreated.items[i].quantity
+//                 //         console.log(quant)
+//                 //         const blankArr = []
+//                 //         let takeOldQuant = {defVar: productID, quant: proQuantity + quant}
+//                 //         blankArr.push(takeOldQuant)
+//                 //         console.log(blankArr)
+//                 //         console.log(takeOldQuant)
+//                 //         const updateExistingProduct = await cartModel.findOneAndUpdate({userId: userId}, {items: blankArr, totalPrice: proP + ifCartAlreadyCreated.totalPrice })
+//                 //         res.status(200).send({status: true, message: "thanks for purchesing product have a great day", data: updateExistingProduct})
+//                 //         return
+//                 //     }
+//                 // }
+//                 //     totalItems: ifCartAlreadyCreated + items.length
+//                 // }
+//                 // console.log(proP)
+//                 //todo =-=-=-=-=-=-=-==-=-=-=-========================================================>
+//                 const updateItems = await cartModel.updateOne({ userId: reqParams }, { $push: { items: items } })
+//                 const updateTPriceItems = await cartModel.findOneAndUpdate({ userId: reqParams }, { totalPrice: (checkPrice.price * proQuantity) + ifCartAlreadyCreated.totalPrice, totalItems: items.length + 1 }, { new: true })
+//                 res.status(200).send({ status: true, message: "product added successfully", data: updateTPriceItems })
+//                 return
+//             }
+//             }
+//             // console.log(productID)
+//             // console.log(productID)
+//             // console.log(productID)
+//             // let checkPrice = await productModel.findOne({ productID })
+//             // console.log(reqParams)
+//             //todo if cart already exist------------------------------>
+//             var saveCart = {
+//                 userId: reqParams,
+//                 items,
+//                 totalPrice: checkPrice.price * proQuantity,
+//                 // checkPrice.price * proQuantity
+//                 totalItems: items.length
+//             };
+//             // console.log(saveCart)
 
-        //     const createCart = await cartModel.create(saveCart)
-        //     res.status(200).send({ status: true, message: "cart successfully created", data: createCart })
-        //     return
-        // // } else {
-        // //     res.status(400).send({ status: false, message: "user dose not match" })
-        // //     return
-        // // }
+//             const createCart = await cartModel.create(saveCart)
+//             res.status(200).send({ status: true, message: "cart successfully created", data: createCart })
+//             return
+//         // } else {
+//         //     res.status(400).send({ status: false, message: "user dose not match" })
+//         //     return
+//         // }
 
 
 // let size = [1, 2 , 3 , 3 , 5]
@@ -620,17 +620,22 @@
 // console.log($.number( 123, 2 ))
 
 
-// let items = [
-//     { productId: "654656565132s1ad1a651", quantity: 5 },
-//     { productId: "654656565132s1ad1a561", quantity: 2 },
-//     { productId: "654656565132s1ad1a000", quantity: 3 }
-// ]
+let items = [
+        { productId: "654656565132s1ad1a651", quantity: 5 },
+        { productId: "654656565132s1ad1a561", quantity: 2 },
+        { productId: "654656565132s1ad1a000", quantity: 3 }
+]
 
-// let find = items.find(function(post, index){
-//     if(post.productId === "654656565132s1ad1a562" ){
-//         return true;
-//     }
+// let find = items.find(function (post, index) {
+//         if (post.productId === "654656565132s1ad1a561") {
+//                 return true;
+//         }
 // })
+
+let constr = items.toString()
+let strfy = JSON.stringify(items)
+console.log(constr)
+console.log(strfy)
 
 // console.log(find)
 // console.log("---------------------------->")
@@ -640,6 +645,7 @@
 // //---------------------------->
 // for(let i = 0; i < items.length; i++){
 //     console.log(items[i])
-// }
+// // }
 
 // console.log(items.length)
+

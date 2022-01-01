@@ -11,6 +11,7 @@ const getCartDetails = async function (req, res) {
 
         let reqBody = req.body
         let reqParams = req.params.userId
+        const varifyUser = req.userId
 
         if (!validate.isValidObjectId(reqParams)) {
             res.staus(400).send({ staus: false, message: "please enter valid details" })
@@ -20,6 +21,10 @@ const getCartDetails = async function (req, res) {
         if (!validate.isValidRequestBody(reqBody)) {
             res.staus(400).send({ staus: false, message: "please enter valid details" })
             return
+        }
+
+        if (!varifyUser === reqParams) {
+            res.status(400).send({ status: false, message: "user Authorization failed" })
         }
 
         let { userId, items, totalPrice, totalItems } = reqBody
@@ -120,6 +125,8 @@ const updateCart = async function (req, res) {
     try {
         let reqBody = req.body
         let userId = req.params.userId
+        const varifyUser = req.userId
+
         if (!validate.isValidObjectId(userId)) {
             res.status(400).send({ status: false, message: "please enter valid userId details" })
             return
@@ -129,9 +136,10 @@ const updateCart = async function (req, res) {
             return
         }
 
-        // if (!TokenDetail === userId) {
-        //     res.status(400).send({ status: false, message: "user Authorization failed" })
-        // }
+        //compair token and user id
+        if (!varifyUser === userId) {
+            res.status(400).send({ status: false, message: "user Authorization failed" })
+        }
 
         let { cartId, productId, removeProduct } = reqBody
         const findUser = await userModel.findOne({ userId })
@@ -174,17 +182,18 @@ const updateCart = async function (req, res) {
         let findUserCart = await cartModel.findOne({ _id: cartId })
         let findItems = findUserCart.items
         console.log(findItems.length)
-        let itemArray = findUserCart.items[0].quantity
+        const findQuant = findUserCart.items.find(c => c['productId'] == productId)
+        let totalItems = findQuant.quantity
         // quantity of product        
         console.log(itemArray)
-        let quantPrice = proPrice * itemArray
+        let quantPrice = proPrice * totalItems
         //product + quantitity price        
         console.log(quantPrice)
         let totalP = findUserCart.totalPrice
         // total price in cart        
         console.log(totalP)
         //  console.log(itemArray)        
-        let quantProPrice = quantPrice / itemArray
+        let quantProPrice = quantPrice / totalItems
         //single product price        
         let findProductInCart = await cartModel.findOne({ _id: cartId, 'items.productId': productId })
         if (!findProductInCart) {
@@ -197,15 +206,16 @@ const updateCart = async function (req, res) {
             let dec = await cartModel.findOneAndUpdate({ _id: cartId }, { totalPrice: totalP - quantProPrice }, { new: true })
             return res.status(200).send({ status: true, message: "product quantity decreased Successfully", data: dec });
         }
+
         if (removeProduct === 0) {
-            const removeProduct = await cartModel.findOneAndUpdate(
+            await cartModel.findOneAndUpdate(
                 { _id: cartId },
                 { $pull: { items: { productId: productId } } },
                 { new: true },
             );
-            console.log(findItems.length)
+            // console.log(findItems.length)
             await cartModel.findOneAndUpdate({ _id: cartId }, { $inc: { totalItems: Number(-1) } })
-            let removePrdt = await cartModel.findOneAndUpdate({ _id: cartId }, { totalPrice: totalP - quantPrice })
+            let removePrdt = await cartModel.findOneAndUpdate({ _id: cartId }, { totalPrice: totalP - quantPrice }, { new: true })
             return res.status(200).send({ status: true, message: "cart  Deleted Successfully", data: removePrdt });
         }
     } catch (error) {
@@ -217,17 +227,14 @@ const updateCart = async function (req, res) {
 const getCart = async function (req, res) {
     try {
         let userId = req.params.userId;
-        let userToken = req.userId;
-        // if (userToken !== userId) {
-        //     res.status(400).send({ status: false, message: "authorization failed!" });
-        //     return;
-        // }
+        let varifyUser = req.userId;
+
         if (!validate.isValidObjectId(userId)) {
             res.status(404).send({ status: false, message: `${userId} is not valid user id ` });
             return;
         }
 
-        if (!TokenDetail === userId) {
+        if (!varifyUser === userId) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
         }
 
@@ -251,12 +258,13 @@ const deleteCart = async function (req, res) {
     try {
 
         const reqParams = req.params.userId
+        const varifyUser = req.userId
 
         if (!validate.isValidObjectId(reqParams)) {
             return res.status(400).send({ status: false, message: `${reqParams} is not a valid userId` })
         }
 
-        if (!TokenDetail === reqParams) {
+        if (!varifyUser === reqParams) {
             res.status(400).send({ status: false, message: "user Authorization failed" })
         }
 

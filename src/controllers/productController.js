@@ -89,7 +89,7 @@ let releaseProduct = async function (req, res) {
             console.log(price)
 
             let createProduct = await productModel.create(saveProductData)
-            res.status(200).send({ status: false, message: `product ${title} created successfully`, data: createProduct })
+            res.status(200).send({ status: true, message: `product ${title} created successfully`, data: createProduct })
             return
         } else {
             res.status(400).send({ status: false, message: "somthing unexpected happen" })
