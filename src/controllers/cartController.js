@@ -112,7 +112,7 @@ const getCartDetails = async function (req, res) {
             // console.log(saveCart)
 
             const createCart = await cartModel.create(saveCart)
-            res.status(200).send({ status: true, message: "cart successfully created", data: createCart })
+            res.status(201).send({ status: true, message: "cart successfully created", data: createCart })
             return
         }
     } catch (error) {

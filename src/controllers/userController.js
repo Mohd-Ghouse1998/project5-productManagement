@@ -247,8 +247,9 @@ const updateUserDetailes = async (req, res) => {
             return res.status(404).send({ status: false, message: `User not found with given UserId` })
         }
 
-        if (!TokenDetail === userId) {
+        if (!(TokenDetail === userId)) {
             res.status(400).send({ status: false, message: "userId in url param and in token is not same" })
+            return
         }
 
         let { fname, lname, email, phone, password } = requestBody

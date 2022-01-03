@@ -346,7 +346,7 @@ const deleteproductByID = async (req, res) => {
         }
 
         else if (findproduct.isDeleted == true) {
-            return res.status(400).send({ status: false, message: `product has been already deleted.` })
+            return res.status(404).send({ status: false, message: `product has been already deleted.` })
         } else {
             const deleteData = await productModel.findOneAndUpdate({ _id: { $in: findproduct } }, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true });
             return res.status(200).send({ status: true, message: "product deleted successfullly."})
