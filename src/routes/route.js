@@ -5,6 +5,7 @@ const userController = require('../controllers/userController')
 const productController = require('../controllers/productController')
 const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
+const invoiceController=require('../controllers/invoiceController')
 //middeleware
 const midvarify = require('../middleware/verify')
 
@@ -31,4 +32,10 @@ router.delete('/users/:userId/cart',midvarify.varifyUser, cartController.deleteC
 router.post('/users/:userId/orders', midvarify.varifyUser, orderController.createOrder)
 router.put('/users/:userId/orders', midvarify.varifyUser, orderController.updateOrder)
 
+
+// invoice routes --------->
+router.post('/users/:userId/invoice' ,invoiceController.createInvoice)
+router.get('/invoice',invoiceController.getInvoice)
+router.put('/invoice/:invoiceId',invoiceController.updateInvoice)
+router.delete('/invoice/:invoiceId',invoiceController.deleteInvoice)
 module.exports = router;

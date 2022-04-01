@@ -440,3 +440,7 @@ const login = async function (req, res) {
 };
 
 module.exports = { registerUser, getUser, updateUserDetailes, login };
+
+
+
+
